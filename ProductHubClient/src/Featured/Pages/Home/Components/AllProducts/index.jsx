@@ -1,20 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetStrapiData } from "../../../../../Services/Api";
 import FramerCard from "../../../../Common/FramerCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { GetUserData } from "../../../../../Services/Users";
 
 const AllProducts = () => {
   const [Page, SetPage] = useState(1);
   const [search, setSearch] = useState("");
   const [PageSize, SetPageSize] = useState(10);
+  const [User, SetUser] = useState("");
   const { data } = useQuery({
-    queryKey: ["framerProduct", Page,search],
+    queryKey: ["framerProduct", Page, search],
     queryFn: () =>
       GetStrapiData(
         `products?pagination[page]=${Page}&pagination[pageSize]=${PageSize}&filters[title][$contains]=${search}&populate=*`
       ),
+    
   });
+
   const TotalPage = data?.meta?.pagination?.pageCount || 1;
   return (
     <div className="px-[24px] py-[26px] container mx-auto ">
